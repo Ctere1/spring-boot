@@ -97,7 +97,7 @@ From your command line:
 | `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |
 | `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   |
 
->**Info**   
+>**Note**   
 You can query the tutorials with `title` and `published` parameters. Check the postman collection for details.
 
 
