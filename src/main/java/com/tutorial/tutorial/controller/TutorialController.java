@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ import com.tutorial.tutorial.repository.TutorialRepository;
  * tutorials.
  * The endpoints support pagination and sorting by various fields.
  */
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
@@ -64,6 +65,7 @@ public class TutorialController {
 	 *         NO_CONTENT status if the list is empty
 	 */
 	@GetMapping("/sortedtutorials")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(defaultValue = "id,desc") String[] sort) {
 
 		try {
@@ -105,6 +107,7 @@ public class TutorialController {
 	 *         current page number, total items, and total pages
 	 */
 	@GetMapping("/tutorials")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(
 			@RequestParam(required = false) String title,
 			@RequestParam(defaultValue = "1") int page,
@@ -158,6 +161,7 @@ public class TutorialController {
 	 *         page number, total items, and total pages
 	 */
 	@GetMapping("/tutorials/published")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Map<String, Object>> findByPublished(
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "3") int size) {
@@ -190,6 +194,7 @@ public class TutorialController {
 	 *         If an error occurs, a INTERNAL_SERVER_ERROR status is returned.
 	 */
 	@GetMapping("/tutorials/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
 		try {
 			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
@@ -213,6 +218,7 @@ public class TutorialController {
 	 *         couldn't be created
 	 */
 	@PostMapping("/tutorials")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
 		try {
 			Tutorial _tutorial = tutorialRepository
@@ -235,6 +241,7 @@ public class TutorialController {
 	 *         while updating the tutorial
 	 */
 	@PutMapping("/tutorials/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
 		try {
 			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
@@ -263,6 +270,7 @@ public class TutorialController {
 	 *         while deleting the tutorial
 	 */
 	@DeleteMapping("/tutorials/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
 		try {
 			tutorialRepository.deleteById(id);
@@ -279,6 +287,7 @@ public class TutorialController {
 	 *         INTERNAL_SERVER_ERROR if an error occurs
 	 */
 	@DeleteMapping("/tutorials")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteAllTutorials() {
 		try {
 			tutorialRepository.deleteAll();

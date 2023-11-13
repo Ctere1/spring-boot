@@ -33,6 +33,7 @@
     - uses Gradle as a build tool. You can use Maven or any other build tool instead of Gradle.
     - uses PostgreSQL as a database. You can use any other database instead of PostgreSQL. You can also use an in-memory database like H2.
     - uses Hibernate as an ORM tool. You can use any other ORM tool instead of Hibernate.
+    - uses Spring Security and JWT for authentication and authorization. Role based authorization is implemented, Bearer token for authentication.
 
 ## 💾Installation Guide
 
@@ -48,8 +49,20 @@ From your command line:
     $ gradle bootRun
     ```
 
-- You can change the database connection string in the `application.properties` file.
-    > After these steps, you can use the API with Postman or any other API testing tool.
+- You can change the database connection string in the `application.properties` file. And you can change the JWT secret key.
+   
+
+  > **Warning**   
+    Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.
+
+    ```sql
+    INSERT INTO tutorial_roles(name) VALUES('ROLE_USER');
+    INSERT INTO tutorial_roles(name) VALUES('ROLE_MODERATOR');
+    INSERT INTO tutorial_roles(name) VALUES('ROLE_ADMIN');
+    ```
+
+- After these steps, you can use the API with Postman or any other API testing tool.
+
 
 ## 🗺️Project Structure 
 
@@ -61,13 +74,14 @@ From your command line:
   │   │   ├───java\com\tutorial\tutorial
   │   │   │   │
   │   │   │   ├───controller
-  │   │   │   │       └───TutorialController.java
   │   │   │   │
   │   │   │   ├───model
-  │   │   │   │       └───Tutorial.java
+  │   │   │   │   
+  │   │   │   ├───payload
+  │   │   │   │   
+  │   │   │   ├───security
   │   │   │   │
   │   │   │   └───repository
-  │   │   │           └───TutorialRepository.java
   │   │   │
   │   │   │
   │   │   └───resources
@@ -88,6 +102,8 @@ From your command line:
 - `src/main/java/com/tutorial/tutorial/model` folder contains the model files. These files contain the database models.
 - `src/main/java/com/tutorial/tutorial/repository` folder contains the repository files. These files contain the interface for database operations.
 - `src/main/resources` folder contains the application properties file.
+- `src/main/java/com/tutorial/tutorial/payload` folder contains the payload files. These files contain the request and response models.
+- `src/main/java/com/tutorial/tutorial/security` folder contains the security files. These files contain the jwt authentication and authorization.
 - `src/test` folder contains the test files.
 - `Java Tutorial API.postman_collection.json` file contains the Postman collection for the API endpoints.
 
@@ -110,8 +126,7 @@ From your command line:
 You can query the tutorials with `title` and `published` parameters. Also, you can sort the tutorials with `sort` parameter. Check the [postman collection](https://github.com/Ctere1/spring-boot/blob/master/Java%20Tutorial%20API.postman_collection.json) for details.
 
 
-
-### **Tutorial Data Example**
+### **Tutorial Endpoint Data Example**
 
 > ![GET](https://img.shields.io/badge/-GET-green)  http://localhost:8080/api/tutorials?page=1&size=3&sort=id,asc
 
@@ -134,6 +149,33 @@ You can query the tutorials with `title` and `published` parameters. Also, you c
     ],
     "totalPages": 1,
     "currentPage": 1
+}
+```
+
+### **Auth Endpoints**
+
+| HTTP Verb   | Endpoint                    | Description                         | Parameters      | Body (JSON)                             |
+| :---------- | :-----------------------    |:----------------------------------  | :-------------  | :-------------------------------------  | 
+| `POST`      | `/api/auth/signup`          |  Creates new user for login         | -               | `username`, `email`, `password`, `role` |
+| `POST`      | `/api/auth/signin`          |  Returns the accessToken            | -               | `username`, `password`                  |
+
+
+### **Auth Endpoint Data Example**
+
+> ![GET](https://img.shields.io/badge/-POST-red)  http://localhost:8080/api/auth/signin | JSON Body: {"username": "cemil","password": "123456"}
+
+```json
+{
+    "id": 1,
+    "username": "cemil",
+    "email": "test@email.com",
+    "roles": [
+        "ROLE_USER",
+        "ROLE_ADMIN",
+        "ROLE_MODERATOR"
+    ],
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjZW1pbCIsImlhdCI6MTY5OTg5ODU3NywiZXhwIjoxNjk5OTg0OTc3fQ._tKB8Otw8Ahp0iCJrXbmHTQVw2tv8lQ2i8vn-9t79XQ",
+    "tokenType": "Bearer"
 }
 ```
 
