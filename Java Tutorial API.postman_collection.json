@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Test tutorial 3\",\r\n    \"description\": \"test 3\",\r\n    \"published\": true\r\n}",
+					"raw": "{\r\n    \"title\": \"Test tutorial\",\r\n    \"description\": \"test\",\r\n    \"published\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -250,6 +250,35 @@
 						"api",
 						"tutorials",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Tutorials",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tutorials",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tutorials"
 					]
 				}
 			},

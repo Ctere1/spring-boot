@@ -28,6 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tutorial.tutorial.model.Tutorial;
 import com.tutorial.tutorial.repository.TutorialRepository;
 
+/**
+ * This class represents the REST API endpoints for managing tutorials.
+ * It provides methods for retrieving, creating, updating, and deleting
+ * tutorials.
+ * The endpoints support pagination and sorting by various fields.
+ */
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
@@ -35,6 +41,10 @@ public class TutorialController {
 	@Autowired
 	TutorialRepository tutorialRepository;
 
+	/**
+	 * An enum for specifying the direction of sorting.
+	 * The values are ASC (ascending) and DESC (descending).
+	 */
 	private Sort.Direction getSortDirection(String direction) {
 		if (direction.equals("asc")) {
 			return Sort.Direction.ASC;
@@ -45,6 +55,14 @@ public class TutorialController {
 		return Sort.Direction.ASC;
 	}
 
+	/**
+	 * Retrieves all tutorials sorted by the given fields and directions.
+	 * 
+	 * @param sort an array of strings representing the fields and directions to
+	 *             sort by
+	 * @return a ResponseEntity containing a list of sorted tutorials or a
+	 *         NO_CONTENT status if the list is empty
+	 */
 	@GetMapping("/sortedtutorials")
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(defaultValue = "id,desc") String[] sort) {
 
@@ -75,6 +93,17 @@ public class TutorialController {
 		}
 	}
 
+	/**
+	 * Retrieves a page of tutorials based on the given parameters.
+	 * 
+	 * @param title the title of the tutorial to search for (optional)
+	 * @param page  the page number to retrieve (default: 1)
+	 * @param size  the number of items per page (default: 3)
+	 * @param sort  an array of fields to sort by, in the format "field,direction"
+	 *              (default: "id,desc")
+	 * @return a ResponseEntity containing a map with the retrieved tutorials,
+	 *         current page number, total items, and total pages
+	 */
 	@GetMapping("/tutorials")
 	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(
 			@RequestParam(required = false) String title,
@@ -120,6 +149,14 @@ public class TutorialController {
 		}
 	}
 
+	/**
+	 * Retrieves a list of published tutorials with pagination.
+	 *
+	 * @param page the page number to retrieve (default: 1)
+	 * @param size the number of items per page (default: 3)
+	 * @return a ResponseEntity containing a map with the list of tutorials, current
+	 *         page number, total items, and total pages
+	 */
 	@GetMapping("/tutorials/published")
 	public ResponseEntity<Map<String, Object>> findByPublished(
 			@RequestParam(defaultValue = "1") int page,
@@ -144,17 +181,37 @@ public class TutorialController {
 		}
 	}
 
+	/**
+	 * Retrieve a tutorial by its ID.
+	 *
+	 * @param id The ID of the tutorial to retrieve.
+	 * @return A ResponseEntity containing the tutorial if it exists, or a NOT_FOUND
+	 *         status if it does not.
+	 *         If an error occurs, a INTERNAL_SERVER_ERROR status is returned.
+	 */
 	@GetMapping("/tutorials/{id}")
 	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+		try {
+			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if (tutorialData.isPresent()) {
+				return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
+	/**
+	 * Create a new tutorial.
+	 *
+	 * @param tutorial the tutorial to be created
+	 * @return the ResponseEntity with status 201 (Created) and with body the new
+	 *         tutorial, or with status 500 (Internal Server Error) if the tutorial
+	 *         couldn't be created
+	 */
 	@PostMapping("/tutorials")
 	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
 		try {
@@ -166,21 +223,45 @@ public class TutorialController {
 		}
 	}
 
+	/**
+	 * Updates a tutorial with the given ID.
+	 * 
+	 * @param id
+	 * @param tutorial
+	 * @return a ResponseEntity with HTTP status code 200 (OK) if the tutorial was
+	 *         updated successfully,
+	 *         or HTTP status code 404 (NOT_FOUND) if the tutorial does not exist
+	 *         or HTTP status code 500 (INTERNAL_SERVER_ERROR) if an error occurred
+	 *         while updating the tutorial
+	 */
 	@PutMapping("/tutorials/{id}")
 	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-		Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+		try {
+			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
-		if (tutorialData.isPresent()) {
-			Tutorial _tutorial = tutorialData.get();
-			_tutorial.setTitle(tutorial.getTitle());
-			_tutorial.setDescription(tutorial.getDescription());
-			_tutorial.setPublished(tutorial.isPublished());
-			return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if (tutorialData.isPresent()) {
+				Tutorial _tutorial = tutorialData.get();
+				_tutorial.setTitle(tutorial.getTitle());
+				_tutorial.setDescription(tutorial.getDescription());
+				_tutorial.setPublished(tutorial.isPublished());
+				return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
+	/**
+	 * Deletes a tutorial with the given ID.
+	 *
+	 * @param id the ID of the tutorial to delete
+	 * @return a ResponseEntity with HTTP status code 204 (NO_CONTENT) if the
+	 *         tutorial was deleted successfully,
+	 *         or HTTP status code 500 (INTERNAL_SERVER_ERROR) if an error occurred
+	 *         while deleting the tutorial
+	 */
 	@DeleteMapping("/tutorials/{id}")
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
 		try {
@@ -191,6 +272,12 @@ public class TutorialController {
 		}
 	}
 
+	/**
+	 * Deletes all tutorials from the database.
+	 *
+	 * @return ResponseEntity with HTTP status NO_CONTENT if successful,
+	 *         INTERNAL_SERVER_ERROR if an error occurs
+	 */
 	@DeleteMapping("/tutorials")
 	public ResponseEntity<HttpStatus> deleteAllTutorials() {
 		try {

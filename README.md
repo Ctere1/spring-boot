@@ -102,6 +102,7 @@ From your command line:
 | `GET`       | `/api/tutorials/{id}`       |  Returns the tutorial with {id}     | `id`                    | -                                   |
 | `GET`       | `/api/sortedtutorials`      |  Returns the sorted tutorials       | `sort`                  | -                                   |
 | `DELETE`    | `/api/tutorials/{id}`       |  Deletes the tutorial with {id}     | `id`                    | -                                   |
+| `DELETE`    | `/api/tutorials`            |  Deletes all tutorials              |  -                      | -                                   |
 | `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |  -                      | `title`, `description`, `published` |
 | `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   | `id`                    | `title`, `description`, `published` |
 
