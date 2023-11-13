@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tutorials/published",
+					"raw": "http://localhost:8080/api/tutorials/published?page=1&size=1&sort=id,asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -126,6 +126,20 @@
 						"api",
 						"tutorials",
 						"published"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "1"
+						},
+						{
+							"key": "sort",
+							"value": "id,asc"
+						}
 					]
 				}
 			},
@@ -149,7 +163,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tutorials?title=tut",
+					"raw": "http://localhost:8080/api/tutorials?title=tut&sort=id,asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -163,6 +177,48 @@
 						{
 							"key": "title",
 							"value": "tut"
+						},
+						{
+							"key": "sort",
+							"value": "id,asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sorted Tutorials",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sortedtutorials?sort=id,asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sortedtutorials"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "id,asc"
 						}
 					]
 				}
@@ -217,7 +273,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tutorials",
+					"raw": "http://localhost:8080/api/tutorials?page=1&size=3&sort=id,asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -226,6 +282,20 @@
 					"path": [
 						"api",
 						"tutorials"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "sort",
+							"value": "id,asc"
+						}
 					]
 				}
 			},

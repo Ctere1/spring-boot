@@ -93,24 +93,40 @@ From your command line:
 | :---------- | :-----------------------    |:----------------------------------  |    
 | `GET`       | `/api/tutorials`            |  Returns All tutorials              |
 | `GET`       | `/api/tutorials/{id}`       |  Returns the tutorial with {id}     |
+| `GET`       | `/api/sortedtutorials`      |  Returns the sorted tutorials       |
 | `DELETE`    | `/api/tutorials/{id}`       |  Deletes the tutorial with {id}     |
 | `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |
 | `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   |
 
 >**Note**   
-You can query the tutorials with `title` and `published` parameters. Check the postman collection for details.
+You can query the tutorials with `title` and `published` parameters. Also, you can sort the tutorials with `sort` parameter. Check the [postman collection](/Java%20Tutorial%20API.postman_collection.json) for details.
 
 
 
 ### **Tutorial Data Example**
 
+> ![GET](https://img.shields.io/badge/-GET-green)  http://localhost:8080/api/tutorials?page=1&size=3&sort=id,asc
+
 ```json
 {
-     "id": 3,
-     "title": "Test tutorial",
-     "description": "test",
-     "published": false
- }
+    "totalItems": 2,
+    "tutorials": [
+        {
+            "id": 2,
+            "title": "Test tutorial",
+            "description": "test",
+            "published": true
+        },
+        {
+            "id": 3,
+            "title": "Test tutorial 2",
+            "description": "test 2",
+            "published": false
+        }
+    ],
+    "totalPages": 1,
+    "currentPage": 1
+}
 ```
 
 ## ©License
