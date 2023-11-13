@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Test tutorial 2\",\r\n    \"description\": \"test 2\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Test tutorial 3\",\r\n    \"description\": \"test 3\",\r\n    \"published\": true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"asd\",\r\n    \"description\": \"updated\"\r\n}",
+					"raw": "{\r\n    \"title\": \"Test tutorial 3U\",\r\n    \"description\": \"tutorial 3 updated\",\r\n    \"published\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +50,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tutorials/1",
+					"raw": "http://localhost:8080/api/tutorials/52",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -59,7 +59,7 @@
 					"path": [
 						"api",
 						"tutorials",
-						"1"
+						"52"
 					]
 				}
 			},
@@ -116,7 +116,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/tutorials/published?page=1&size=1&sort=id,asc",
+					"raw": "http://localhost:8080/api/tutorials/published?page=1&size=3&sort=id,asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -134,7 +134,7 @@
 						},
 						{
 							"key": "size",
-							"value": "1"
+							"value": "3"
 						},
 						{
 							"key": "sort",

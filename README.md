@@ -59,16 +59,23 @@ From your command line:
   ├───src
   │   ├───main
   │   │   ├───java\com\tutorial\tutorial
+  │   │   │   │
   │   │   │   ├───controller
   │   │   │   │       └───TutorialController.java
+  │   │   │   │
   │   │   │   ├───model
   │   │   │   │       └───Tutorial.java
+  │   │   │   │
   │   │   │   └───repository
   │   │   │           └───TutorialRepository.java
+  │   │   │
+  │   │   │
   │   │   └───resources
   │   │       └───application.properties
+  │   │
   │   └───test
   │        └───TutorialApplicationTests.java
+  │
   │
   └───tutorial_api.postman_collection.json
 
@@ -82,21 +89,21 @@ From your command line:
 - `src/main/java/com/tutorial/tutorial/repository` folder contains the repository files. These files contain the interface for database operations.
 - `src/main/resources` folder contains the application properties file.
 - `src/test` folder contains the test files.
-- `tutorial_api.postman_collection.json` file contains the postman collection for the API.
+- `Java Tutorial API.postman_collection.json` file contains the Postman collection for the API endpoints.
 
 
 ## ⚡API
 
 ### **Tutorial Endpoints**
 
-| HTTP Verb   | Endpoint                    | Description                         |  
-| :---------- | :-----------------------    |:----------------------------------  |    
-| `GET`       | `/api/tutorials`            |  Returns All tutorials              |
-| `GET`       | `/api/tutorials/{id}`       |  Returns the tutorial with {id}     |
-| `GET`       | `/api/sortedtutorials`      |  Returns the sorted tutorials       |
-| `DELETE`    | `/api/tutorials/{id}`       |  Deletes the tutorial with {id}     |
-| `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |
-| `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   |
+| HTTP Verb   | Endpoint                    | Description                         | Parameters              | Body (JSON)                         |
+| :---------- | :-----------------------    |:----------------------------------  | :--------------------   | :--------------------------------   | 
+| `GET`       | `/api/tutorials`            |  Returns All tutorials              | `page`, `size`, `sort`  | -                                   |
+| `GET`       | `/api/tutorials/{id}`       |  Returns the tutorial with {id}     | `id`                    | -                                   |
+| `GET`       | `/api/sortedtutorials`      |  Returns the sorted tutorials       | `sort`                  | -                                   |
+| `DELETE`    | `/api/tutorials/{id}`       |  Deletes the tutorial with {id}     | `id`                    | -                                   |
+| `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |  -                      | `title`, `description`, `published` |
+| `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   | `id`                    | `title`, `description`, `published` |
 
 >**Note**   
 You can query the tutorials with `title` and `published` parameters. Also, you can sort the tutorials with `sort` parameter. Check the [postman collection](/Java%20Tutorial%20API.postman_collection.json) for details.
