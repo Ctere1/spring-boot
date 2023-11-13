@@ -1,16 +1,18 @@
 <h1 align="center">
-  Spring-boot API
+  Spring-boot API  
   
+   
   ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
   ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-  ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
-  ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
+  ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white) <br>
+  ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) 
   ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+  ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
   <br>
 </h1>
 
 <p align="center">
-  <a href="#introduction">Introduction</a> •
+  <a href="#ℹ%EF%B8%8F-introduction">Introduction</a> •
   <a href="#installation-guide">Installation Guide</a> •
   <a href="#%EF%B8%8Fproject-structure">Project Structure</a> •
   <a href="#api">API Reference</a> •
