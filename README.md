@@ -112,6 +112,10 @@ From your command line:
 
 ## ⚡API
 
+- You can check the swagger documentation after running the server. The swagger documentation is available at `http://localhost:8080/swagger-ui/index.html#/`.
+- You can perform CRUD operations with authentication and authorization with the swagger ui.  
+  ![Screenshot](images/ss.png)   
+
 ### **Tutorial Endpoints**
 
 | HTTP Verb   | Endpoint                    | Description                         | Parameters              | Body (JSON)                         |

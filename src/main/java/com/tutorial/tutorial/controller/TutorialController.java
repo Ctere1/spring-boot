@@ -29,6 +29,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tutorial.tutorial.model.Tutorial;
 import com.tutorial.tutorial.repository.TutorialRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * This class represents the REST API endpoints for managing tutorials.
  * It provides methods for retrieving, creating, updating, and deleting
@@ -38,6 +45,7 @@ import com.tutorial.tutorial.repository.TutorialRepository;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
+@Tag(name = "tutorials", description = "Tutorial Endpoints")
 public class TutorialController {
 	@Autowired
 	TutorialRepository tutorialRepository;
@@ -66,6 +74,12 @@ public class TutorialController {
 	 */
 	@GetMapping("/sortedtutorials")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	@Operation(summary = "Get a list of tutorials sorted by the given fields and directions", description = "Retrieves a list of tutorials sorted by the given fields and directions.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(defaultValue = "id,desc") String[] sort) {
 
 		try {
@@ -108,6 +122,12 @@ public class TutorialController {
 	 */
 	@GetMapping("/tutorials")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	@Operation(summary = "Get a list of tutorials with pagination", description = "Retrieves a list of tutorials with pagination.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(
 			@RequestParam(required = false) String title,
 			@RequestParam(defaultValue = "1") int page,
@@ -162,6 +182,12 @@ public class TutorialController {
 	 */
 	@GetMapping("/tutorials/published")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	@Operation(summary = "Get a list of published tutorials with pagination", description = "Retrieves a list of published tutorials with pagination.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Map<String, Object>> findByPublished(
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "3") int size) {
@@ -195,6 +221,12 @@ public class TutorialController {
 	 */
 	@GetMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	@Operation(summary = "Get a tutorial by ID", description = "Retrieve a tutorial by its ID.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
 		try {
 			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
@@ -219,6 +251,12 @@ public class TutorialController {
 	 */
 	@PostMapping("/tutorials")
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "Create a new tutorial", description = "Create a new tutorial")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
 		try {
 			Tutorial _tutorial = tutorialRepository
@@ -242,6 +280,12 @@ public class TutorialController {
 	 */
 	@PutMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "Update a tutorial by ID", description = "Update a tutorial by ID")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
 		try {
 			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
@@ -271,6 +315,12 @@ public class TutorialController {
 	 */
 	@DeleteMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "Delete a tutorial by ID", description = "Deletes a tutorial with the given ID.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
 		try {
 			tutorialRepository.deleteById(id);
@@ -288,6 +338,12 @@ public class TutorialController {
 	 */
 	@DeleteMapping("/tutorials")
 	@PreAuthorize("hasRole('ADMIN')")
+	@Operation(summary = "Delete all tutorials", description = "Deletes all tutorials from the database.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<HttpStatus> deleteAllTutorials() {
 		try {
 			tutorialRepository.deleteAll();

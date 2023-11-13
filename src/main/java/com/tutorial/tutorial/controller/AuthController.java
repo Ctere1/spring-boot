@@ -32,9 +32,14 @@ import com.tutorial.tutorial.repository.UserRepository;
 import com.tutorial.tutorial.security.jwt.JwtUtils;
 import com.tutorial.tutorial.security.services.UserDetailsImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "auth", description = "Authentication Endpoints")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -52,6 +57,12 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
+    @Operation(summary = "Authenticate user", description = "Authenticate user with username and password")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User authenticated successfully!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Error: Username is not found!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Error: Password is not correct!")
+    })
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -73,6 +84,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @Operation(summary = "Create Authenticated user", description = "Create Authenticated user with username, email and password")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User registered successfully!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Error: Username is already taken!"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Error: Email is already in use!")
+    })
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
