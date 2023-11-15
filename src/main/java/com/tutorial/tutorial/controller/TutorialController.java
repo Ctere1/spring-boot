@@ -114,7 +114,7 @@ public class TutorialController {
 	 * 
 	 * @param title the title of the tutorial to search for (optional)
 	 * @param page  the page number to retrieve (default: 1)
-	 * @param size  the number of items per page (default: 3)
+	 * @param size  the number of items per page (default: 5)
 	 * @param sort  an array of fields to sort by, in the format "field,direction"
 	 *              (default: "id,desc")
 	 * @return a ResponseEntity containing a map with the retrieved tutorials,
@@ -131,7 +131,7 @@ public class TutorialController {
 	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(
 			@RequestParam(required = false) String title,
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "3") int size,
+			@RequestParam(defaultValue = "5") int size,
 			@RequestParam(defaultValue = "id,desc") String[] sort) {
 
 		try {
@@ -176,7 +176,7 @@ public class TutorialController {
 	 * Retrieves a list of published tutorials with pagination.
 	 *
 	 * @param page the page number to retrieve (default: 1)
-	 * @param size the number of items per page (default: 3)
+	 * @param size the number of items per page (default: 5)
 	 * @return a ResponseEntity containing a map with the list of tutorials, current
 	 *         page number, total items, and total pages
 	 */
@@ -190,7 +190,7 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Map<String, Object>> findByPublished(
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "3") int size) {
+			@RequestParam(defaultValue = "5") int size) {
 
 		try {
 			List<Tutorial> tutorials = new ArrayList<Tutorial>();
