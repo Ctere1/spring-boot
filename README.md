@@ -58,12 +58,12 @@ From your command line:
    
 > [!IMPORTANT] 
 > Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.
-
-    ```sql
+      
+   ```sql
     INSERT INTO tutorial_roles(name) VALUES('ROLE_USER');
     INSERT INTO tutorial_roles(name) VALUES('ROLE_MODERATOR');
     INSERT INTO tutorial_roles(name) VALUES('ROLE_ADMIN');
-    ```
+   ```
 
 - After these steps, you can use the API with Postman or any other API testing tool.
 
@@ -136,7 +136,8 @@ From your command line:
 
 ### **Tutorial Endpoint Data Example**
 
-> ![GET](https://img.shields.io/badge/-GET-green)  http://localhost:8080/api/tutorials?page=1&size=3&sort=id,asc
+> ![GET](https://img.shields.io/badge/-GET-green)    
+> http://localhost:8080/api/tutorials?page=1&size=3&sort=id,asc
 
 ```json
 {
@@ -170,7 +171,8 @@ From your command line:
 
 ### **Auth Endpoint Data Example**
 
-> ![GET](https://img.shields.io/badge/-POST-red)  http://localhost:8080/api/auth/signin | JSON Body: {"username": "cemil","password": "123456"}
+> ![GET](https://img.shields.io/badge/-POST-red)    
+> http://localhost:8080/api/auth/signin | JSON Body: {"username": "cemil","password": "123456"}
 
 ```json
 {
