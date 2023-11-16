@@ -37,6 +37,9 @@
     - uses Hibernate as an ORM tool. You can use any other ORM tool instead of Hibernate.
     - uses Spring Security and JWT for authentication and authorization. Role based authorization is implemented, Bearer token for authentication.
 
+> [!TIP]    
+> For client side, please refer to following project: [Spring Boot React](https://github.com/Ctere1/spring-boot-react) 
+
 ## 💾Installation Guide
 
 - To clone and run this application, you'll need [Git](https://git-scm.com), [Java](https://www.java.com/en/download/help/download_options.html), [Gradle](https://gradle.org/install/) and [PostgreSQL](https://www.postgresql.org/download/) installed on your computer.
