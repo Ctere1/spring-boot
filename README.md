@@ -53,9 +53,8 @@ From your command line:
 
 - You can change the database connection string in the `application.properties` file. And you can change the JWT secret key.
    
-
-  > **Warning**   
-    Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.
+> [!IMPORTANT] 
+> Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.
 
     ```sql
     INSERT INTO tutorial_roles(name) VALUES('ROLE_USER');
@@ -128,8 +127,8 @@ From your command line:
 | `POST`      | `/api/tutorials`            |  Creates and returns tutorial       |  -                      | `title`, `description`, `published` |
 | `PUT`       | `/api/tutorials/{id}`       |  Updates and returns the tutorial   | `id`                    | `title`, `description`, `published` |
 
->**Note**   
-You can query the tutorials with `title` and `published` parameters. Also, you can sort the tutorials with `sort` parameter. Check the [postman collection](https://github.com/Ctere1/spring-boot/blob/master/Java%20Tutorial%20API.postman_collection.json) for details.
+> [!NOTE]  
+> You can query the tutorials with `title` and `published` parameters. Also, you can sort the tutorials with `sort` parameter. Check the [postman collection](https://github.com/Ctere1/spring-boot/blob/master/Java%20Tutorial%20API.postman_collection.json) for details.
 
 
 ### **Tutorial Endpoint Data Example**
