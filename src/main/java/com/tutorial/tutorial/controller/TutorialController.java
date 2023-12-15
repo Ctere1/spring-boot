@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tutorial.tutorial.model.Tutorial;
-import com.tutorial.tutorial.repository.TutorialRepository;
+import com.tutorial.tutorial.service.impl.TutorialServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,9 +37,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * This class represents the REST API endpoints for managing tutorials.
- * It provides methods for retrieving, creating, updating, and deleting
- * tutorials.
+ * This class represents the REST API endpoints for managing tutorials. It
+ * provides methods for retrieving, creating, updating, and deleting tutorials.
  * The endpoints support pagination and sorting by various fields.
  */
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -48,11 +47,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "tutorials", description = "Tutorial Endpoints")
 public class TutorialController {
 	@Autowired
-	TutorialRepository tutorialRepository;
+	TutorialServiceImpl tutorialServiceImpl;
 
 	/**
-	 * An enum for specifying the direction of sorting.
-	 * The values are ASC (ascending) and DESC (descending).
+	 * An enum for specifying the direction of sorting. The values are ASC
+	 * (ascending) and DESC (descending).
 	 */
 	private Sort.Direction getSortDirection(String direction) {
 		if (direction.equals("asc")) {
@@ -97,7 +96,7 @@ public class TutorialController {
 				orders.add(new Order(getSortDirection(sort[1]), sort[0]));
 			}
 
-			List<Tutorial> tutorials = tutorialRepository.findAll(Sort.by(orders));
+			List<Tutorial> tutorials = tutorialServiceImpl.getAll(Sort.by(orders));
 
 			if (tutorials.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -128,10 +127,8 @@ public class TutorialController {
 					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
 			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(
-			@RequestParam(required = false) String title,
-			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "5") int size,
+	public ResponseEntity<Map<String, Object>> getAllTutorialsPage(@RequestParam(required = false) String title,
+			@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size,
 			@RequestParam(defaultValue = "id,desc") String[] sort) {
 
 		try {
@@ -154,9 +151,9 @@ public class TutorialController {
 
 			Page<Tutorial> pageTuts;
 			if (title == null)
-				pageTuts = tutorialRepository.findAll(pagingSort);
+				pageTuts = tutorialServiceImpl.getAll(pagingSort);
 			else
-				pageTuts = tutorialRepository.findByTitleContaining(title, pagingSort);
+				pageTuts = tutorialServiceImpl.getByTitleContaining(title, pagingSort);
 
 			tutorials = pageTuts.getContent();
 
@@ -188,15 +185,14 @@ public class TutorialController {
 					@Content(schema = @Schema(implementation = Tutorial.class), mediaType = "application/json") }),
 			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-	public ResponseEntity<Map<String, Object>> findByPublished(
-			@RequestParam(defaultValue = "1") int page,
+	public ResponseEntity<Map<String, Object>> findByPublished(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "5") int size) {
 
 		try {
 			List<Tutorial> tutorials = new ArrayList<Tutorial>();
 			Pageable paging = PageRequest.of(page - 1, size);
 
-			Page<Tutorial> pageTuts = tutorialRepository.findByPublished(true, paging);
+			Page<Tutorial> pageTuts = tutorialServiceImpl.getPublished(true, paging);
 			tutorials = pageTuts.getContent();
 
 			Map<String, Object> response = new HashMap<>();
@@ -216,8 +212,8 @@ public class TutorialController {
 	 *
 	 * @param id The ID of the tutorial to retrieve.
 	 * @return A ResponseEntity containing the tutorial if it exists, or a NOT_FOUND
-	 *         status if it does not.
-	 *         If an error occurs, a INTERNAL_SERVER_ERROR status is returned.
+	 *         status if it does not. If an error occurs, a INTERNAL_SERVER_ERROR
+	 *         status is returned.
 	 */
 	@GetMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -229,7 +225,7 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id) {
 		try {
-			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+			Optional<Tutorial> tutorialData = tutorialServiceImpl.getById(id);
 
 			if (tutorialData.isPresent()) {
 				return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
@@ -259,7 +255,7 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
 		try {
-			Tutorial _tutorial = tutorialRepository
+			Tutorial _tutorial = tutorialServiceImpl
 					.save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), tutorial.isPublished()));
 			return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -273,10 +269,10 @@ public class TutorialController {
 	 * @param id
 	 * @param tutorial
 	 * @return a ResponseEntity with HTTP status code 200 (OK) if the tutorial was
-	 *         updated successfully,
-	 *         or HTTP status code 404 (NOT_FOUND) if the tutorial does not exist
-	 *         or HTTP status code 500 (INTERNAL_SERVER_ERROR) if an error occurred
-	 *         while updating the tutorial
+	 *         updated successfully, or HTTP status code 404 (NOT_FOUND) if the
+	 *         tutorial does not exist or HTTP status code 500
+	 *         (INTERNAL_SERVER_ERROR) if an error occurred while updating the
+	 *         tutorial
 	 */
 	@PutMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -288,14 +284,14 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
 		try {
-			Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+			Optional<Tutorial> tutorialData = tutorialServiceImpl.getById(id);
 
 			if (tutorialData.isPresent()) {
 				Tutorial _tutorial = tutorialData.get();
 				_tutorial.setTitle(tutorial.getTitle());
 				_tutorial.setDescription(tutorial.getDescription());
 				_tutorial.setPublished(tutorial.isPublished());
-				return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+				return new ResponseEntity<>(tutorialServiceImpl.save(_tutorial), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
@@ -309,9 +305,9 @@ public class TutorialController {
 	 *
 	 * @param id the ID of the tutorial to delete
 	 * @return a ResponseEntity with HTTP status code 204 (NO_CONTENT) if the
-	 *         tutorial was deleted successfully,
-	 *         or HTTP status code 500 (INTERNAL_SERVER_ERROR) if an error occurred
-	 *         while deleting the tutorial
+	 *         tutorial was deleted successfully, or HTTP status code 500
+	 *         (INTERNAL_SERVER_ERROR) if an error occurred while deleting the
+	 *         tutorial
 	 */
 	@DeleteMapping("/tutorials/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -323,7 +319,7 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
 		try {
-			tutorialRepository.deleteById(id);
+			tutorialServiceImpl.delete(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -346,7 +342,7 @@ public class TutorialController {
 			@ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
 	public ResponseEntity<HttpStatus> deleteAllTutorials() {
 		try {
-			tutorialRepository.deleteAll();
+			tutorialServiceImpl.deleteAll();
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

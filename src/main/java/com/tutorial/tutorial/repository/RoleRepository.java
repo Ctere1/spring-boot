@@ -11,5 +11,5 @@ import com.tutorial.tutorial.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-    Optional<Role> findByName(ERole name);
+	Optional<Role> findByName(ERole name);
 }
