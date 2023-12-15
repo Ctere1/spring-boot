@@ -56,8 +56,9 @@ From your command line:
 
 - You can change the database connection string in the `application.properties` file. And you can change the JWT secret key.
    
-> [!IMPORTANT] 
-> Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.
+> [!IMPORTANT]  
+> ~Before running the application, you should run the following SQL script to create the `tutorial_roles` table in your database.~  
+> UPDATE: No need to run SQL script anymore. It will auto add all roles.
       
    ```sql
     INSERT INTO tutorial_roles(name) VALUES('ROLE_USER');

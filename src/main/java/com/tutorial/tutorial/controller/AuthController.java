@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PostPersist;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,24 @@ public class AuthController {
 
 	@Autowired
 	JwtUtils jwtUtils;
+
+	@PostPersist
+	@PostLoad
+	@PostConstruct
+	private void initializeRoles() {
+		// Check if roles exist, and insert them if not
+		if (!roleServiceImpl.existsByName(ERole.ROLE_USER)) {
+			roleServiceImpl.save(new Role(ERole.ROLE_USER));
+		}
+
+		if (!roleServiceImpl.existsByName(ERole.ROLE_MODERATOR)) {
+			roleServiceImpl.save(new Role(ERole.ROLE_MODERATOR));
+		}
+
+		if (!roleServiceImpl.existsByName(ERole.ROLE_ADMIN)) {
+			roleServiceImpl.save(new Role(ERole.ROLE_ADMIN));
+		}
+	}
 
 	@PostMapping("/signin")
 	@Operation(summary = "Authenticate user", description = "Authenticate user with username and password")

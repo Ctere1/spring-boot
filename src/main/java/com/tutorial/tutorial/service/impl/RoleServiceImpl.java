@@ -22,4 +22,15 @@ public class RoleServiceImpl implements RoleService {
 		return userRole;
 	}
 
+	@Override
+	public boolean existsByName(ERole name) {
+		return roleRepository.existsByName(name);
+	}
+
+	@Override
+	public Role save(Role role) {
+		Role savedRole = roleRepository.save(role);
+		return savedRole;
+	}
+
 }

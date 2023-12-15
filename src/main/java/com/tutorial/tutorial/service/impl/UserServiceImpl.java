@@ -23,22 +23,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Boolean existsByUsername(String username) {
-		try {
-			userRepository.existsByUsername(username);
-			return true;
-		} catch (Exception e) {
-			throw e;
-		}
+		return userRepository.existsByUsername(username);
 	}
 
 	@Override
 	public Boolean existsByEmail(String email) {
-		try {
-			userRepository.existsByEmail(email);
-			return true;
-		} catch (Exception e) {
-			throw e;
-		}
+		return userRepository.existsByEmail(email);
 	}
 
 	@Override
